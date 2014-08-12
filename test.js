@@ -3,14 +3,39 @@
 'use strict';
 var assert = require('assert');
 var sent = require('./index');
+var fs = require('fs');
+
+var devNull = 'http://devnull-as-a-service.com/dev/null';
 
 it('should send Buffer', function (done) {
-	sent('http://devnull-as-a-service.com/dev/null', '', function (err) {
-		if (err) {
-			console.error(err);
-			assert(false);
-			return;
-		}
+	sent(devNull, new Buffer('Hello'), function (err, data, res) {
+		fine(err);
+		assert.equal(res.statusCode, 200);
 		done();
 	});
 });
+
+it('should send string', function (done) {
+	sent(devNull, 'Hello', function (err, data, res) {
+		fine(err);
+		assert.equal(res.statusCode, 200);
+		done();
+	});
+});
+
+it('should send Stream', function (done) {
+	sent(devNull, fs.createReadStream(__filename), function (err, data, res) {
+		fine(err);
+		assert.equal(res.statusCode, 200);
+		done();
+	});
+});
+
+
+function fine (err) {
+	if (err) {
+		console.error(err);
+		assert(false);
+		return;
+	}
+}

@@ -67,8 +67,12 @@ module.exports = function (url, content, opts, cb) {
 			});
 		}).once('error', cb);
 
-		req.write(content);
-		req.end();
+		if (content.pipe) {
+			content.pipe(req);
+		} else {
+			req.write(content);
+			req.end();
+		}
 	};
 
 	send(url, content, opts, cb);
