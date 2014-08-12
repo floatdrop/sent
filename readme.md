@@ -1,8 +1,8 @@
-# send [![Build Status](https://travis-ci.org/sindresorhus/got.svg?branch=master)](https://travis-ci.org/sindresorhus/got)
+# sent [![Build Status](https://travis-ci.org/floatdrop/sent.svg?branch=master)](https://travis-ci.org/floatdrop/sent)
 
 > Simplified HTTP/HTTPS upload requests
 
-A nicer interface to the built-in [`http`](http://nodejs.org/api/http.html) module. It hevily inspired by [got](https://github.com/sindresorhus/got) module (cudos to Sindre Sorhus).
+A nicer interface to the built-in [`http`](http://nodejs.org/api/http.html) module. It heavily inspired by [got](https://github.com/sindresorhus/got) module (cudos to Sindre Sorhus).
 
 Use [request](https://github.com/mikeal/request) if you need more.
 
@@ -17,7 +17,7 @@ $ npm install --save sent
 ```js
 var sent = require('sent');
 
-sent('http://devnull-as-a-service.com/dev/null', function (err, data, res) {
+sent('http://devnull-as-a-service.com/dev/null', 'Hello', function (err, data, res) {
 	console.log(res.statusCode);
 });
 ```
