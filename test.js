@@ -31,6 +31,11 @@ it('should send Stream', function (done) {
 	});
 });
 
+it('should return Stream without callback', function () {
+	var stream = sent(devNull, fs.createReadStream(__filename));
+	assert.notEqual(stream, undefined);
+	assert.notEqual(stream.pipe, undefined);
+});
 
 function fine (err) {
 	if (err) {
