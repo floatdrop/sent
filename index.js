@@ -73,7 +73,6 @@ module.exports = function (url, content, opts, cb) {
 
 			// If in proxy mode, simply pipe the response to the proxy.
 			if (proxy) {
-				res.pipe(proxy);
 				res.on('error', proxy.emit.bind(proxy, 'error')).pipe(proxy);
 				return;
 			}
