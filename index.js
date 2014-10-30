@@ -7,7 +7,32 @@ var zlib = require('zlib');
 var PassThrough = require('stream').PassThrough;
 var assign = require('object-assign');
 
-module.exports = function (url, content, opts, cb) {
+function read(res, encoding, cb) {
+	if (!cb) {
+		cb = encoding;
+		encoding = undefined;
+	}
+
+	var chunks = [];
+	var len = 0;
+
+	res.on('data', function (chunk) {
+		chunks.push(chunk);
+		len += chunk.length;
+	});
+
+	res.once('end', function () {
+		var data = Buffer.concat(chunks, len);
+
+		if (encoding !== null) {
+			data = data.toString(encoding || 'utf8');
+		}
+
+		cb(null, data, res);
+	});
+}
+
+function sent(url, content, opts, cb) {
 	if (typeof opts === 'function') {
 		// If `cb` has been specified but `opts` has not.
 		cb = opts;
@@ -40,7 +65,7 @@ module.exports = function (url, content, opts, cb) {
 	}, opts.headers || {});
 
 	var redirectCount = 0;
-	var sent = function (url, content, opts, cb) {
+	var send = function (url, content, opts, cb) {
 		var parsedUrl = urlLib.parse(url);
 		var fn = parsedUrl.protocol === 'https:' ? https : http;
 		var arg = assign({ method: 'POST' }, parsedUrl, opts);
@@ -48,20 +73,19 @@ module.exports = function (url, content, opts, cb) {
 		var req = fn.request(arg, function (res) {
 			// redirect
 			if (res.statusCode < 400 && res.statusCode >= 300 && res.headers.location) {
-				res.destroy();
-
 				if (++redirectCount > 10) {
-					cb(new Error('Redirected 10 times. Aborting.'));
+					cb(new Error('Redirected 10 times. Aborting.'), undefined, res);
 					return;
 				}
 
-				sent(urlLib.resolve(url, res.headers.location), content, opts, cb);
+				send(urlLib.resolve(url, res.headers.location), content, opts, cb);
 				return;
 			}
 
 			if (res.statusCode < 200 || res.statusCode > 299) {
-				res.destroy();
-				cb(res.statusCode);
+				var err = new Error('Couldn\'t connect to ' + url + '.');
+				err.code = res.statusCode;
+				cb(err, undefined, res);
 				return;
 			}
 
@@ -79,33 +103,26 @@ module.exports = function (url, content, opts, cb) {
 
 			res.once('error', cb);
 
-			var chunks = [];
-			var len = 0;
+			read(res, encoding, cb);
 
-			res.on('data', function (chunk) {
-				chunks.push(chunk);
-				len += chunk.length;
-			});
-
-			res.once('end', function () {
-				var data = Buffer.concat(chunks, len);
-
-				if (encoding !== null) {
-					data = data.toString(encoding || 'utf8');
-				}
-
-				cb(null, data, res);
-			});
 		}).once('error', cb);
 
-		if (content.pipe) {
-			content.pipe(req);
+		if (content) {
+			if (content.pipe) {
+				content.pipe(req);
+			} else {
+				req.write(content);
+				req.end();
+			}
 		} else {
-			req.write(content);
 			req.end();
 		}
 	};
 
-	sent(url, content, opts, cb);
+	send(url, content, opts, cb);
 	return proxy;
-};
+}
+
+sent.read = read;
+
+module.exports = sent;
