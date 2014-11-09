@@ -30,7 +30,8 @@
     "simple"
   ],
   "dependencies": {
-    "object-assign": "^1.0.0"
+    "object-assign": "^1.0.0",
+    "read-all-stream": "^0.1.2"
   },
   "devDependencies": {
     "mocha": "*"
