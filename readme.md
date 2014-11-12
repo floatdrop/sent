@@ -61,6 +61,10 @@ Encoding to be used on `setEncoding` of the response data. If null, the body is 
 
 ##### callback(err, data, response)
 
+###### err
+
+`Error` object with `code` property.
+
 ###### data
 
 Answer from server on your request.
