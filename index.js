@@ -7,6 +7,7 @@ var zlib = require('zlib');
 var PassThrough = require('stream').PassThrough;
 var assign = require('object-assign');
 var read = require('read-all-stream');
+var timeout = require('timed-out');
 
 module.exports = function (url, content, opts, cb) {
 	if (typeof opts === 'function') {
@@ -84,6 +85,10 @@ module.exports = function (url, content, opts, cb) {
 
 			read(res, encoding, cb, res);
 		}).once('error', cb);
+
+		if (opts.timeout) {
+			timeout(req, opts.timeout);
+		}
 
 		if (!content) {
 			req.end();

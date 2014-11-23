@@ -37,6 +37,15 @@ it('should return Stream without callback', function () {
 	assert.notEqual(stream.pipe, undefined);
 });
 
+it('should support timeout option', function (done) {
+	var stream = sent(devNull, fs.createReadStream(__filename), { timeout: 1 });
+
+	stream.on('error', function (error) {
+		assert.strictEqual(error.code, 'ETIMEDOUT');
+		done();
+	});
+});
+
 function fine (err) {
 	if (err) {
 		console.error(err);
