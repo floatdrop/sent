@@ -61,9 +61,9 @@ Encoding to be used on `setEncoding` of the response data. If null, the body is 
 
 ##### options.timeout
 
-Type: `Number`  
+Type: `number`  
 
-Time in ms, after which request will be aborted and error event with `ECONNRESET` code will be emitted.
+Milliseconds after which the request will be aborted and an error event with ETIMEDOUT code will be emitted.
 
 ##### callback(err, data, response)
 
