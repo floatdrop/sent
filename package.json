@@ -30,11 +30,10 @@
     "simple"
   ],
   "dependencies": {
-    "object-assign": "^2.0.0",
-    "read-all-stream": "^0.1.2",
-    "timed-out": "^1.0.0"
+    "got": "^2.1.0"
   },
   "devDependencies": {
+    "from2-array": "0.0.3",
     "mocha": "*"
   }
 }

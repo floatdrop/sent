@@ -2,7 +2,7 @@
 
 > Simplified HTTP/HTTPS upload requests
 
-A nicer interface to the built-in [`http`](http://nodejs.org/api/http.html) module.
+Wrapper around [got](https://github.com/sindresorhus/got) to send POST data from arguments.
 
 Use [request](https://github.com/mikeal/request) if you need more.
 
@@ -26,62 +26,9 @@ sent('http://devnull-as-a-service.com/dev/null', 'Hello', function (err, data, r
 sent('http://devnull-as-a-service.com/dev/null', 'Hello').pipe(fs.createWriteStream('index.html'));
 ```
 
-### API
-
-It's a `POST` request by default, but can be changed in `options`.
-
 #### sent(url, content, [options], [callback])
 
-##### url
-
-*Required*  
-Type: `string`
-
-The url to request.
-
-##### content
-
-*Required*  
-Type: `Stream`, `Buffer` or `string`
-
-Content to send.
-
-##### options
-
-Type: `object`
-
-Any of the [`http.request`](http://nodejs.org/api/http.html#http_http_request_options_callback) options.
-
-##### options.encoding
-
-Type: `string`, `null`  
-Default: `'utf8'`
-
-Encoding to be used on `setEncoding` of the response data. If null, the body is returned as a Buffer.
-
-##### options.timeout
-
-Type: `number`  
-
-Milliseconds after which the request will be aborted and an error event with ETIMEDOUT code will be emitted.
-
-##### callback(err, data, response)
-
-###### err
-
-`Error` object with `code` property.
-
-###### data
-
-Answer from server on your request.
-
-###### response
-
-The [response object](http://nodejs.org/api/http.html#http_http_incomingmessage).
-
-## Related
-
-See [got](https://github.com/sindresorhus/got) if you need to download something.
+See [got](https://github.com/sindresorhus/got) for options explanation.
 
 ## License
 
