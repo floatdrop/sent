@@ -12,7 +12,7 @@ module.exports = function (url, content, opts, cb) {
 		opts = {};
 	}
 
-	opts.content = content;
+	opts.body = content;
 
 	return got(url, opts, cb);
 };
