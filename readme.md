@@ -2,6 +2,8 @@
 
 > Simplified HTTP/HTTPS upload requests
 
+__Deprecated:__ use [got](https://github.com/sindresorhus/got) directly.
+
 Wrapper around [got](https://github.com/sindresorhus/got) to send POST data from arguments.
 
 Use [request](https://github.com/mikeal/request) if you need more.
