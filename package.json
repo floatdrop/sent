@@ -1,6 +1,6 @@
 {
   "name": "sent",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Simplified HTTP/HTTPS upload requests",
   "license": "MIT",
   "repository": "floatdrop/sent",
